@@ -146,6 +146,24 @@ out.style.display='block'
 out.innerHTML="AI is thinking..."
 
 try{
+const res=await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(
+"https://api.affiliateplus.xyz/api/chatbot?message="+q+"&botname=BharatStudyAI&owner=India"
+))
+
+const text=await res.text()
+out.innerHTML=text
+
+}catch(e){
+out.innerHTML="AI temporarily unavailable"
+}
+}
+let q=document.getElementById('question').value
+let out=document.getElementById('output')
+
+out.style.display='block'
+out.innerHTML="AI is thinking..."
+
+try{
 const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{
 method:"POST",
 headers:{
