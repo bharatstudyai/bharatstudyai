@@ -149,6 +149,44 @@ try{
 const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{
 method:"POST",
 headers:{
+"Authorization":"Bearer " + API_KEY,
+"Content-Type":"application/json",
+"HTTP-Referer":"https://bharatstudyai.github.io",
+"X-Title":"BharatStudyAI"
+},
+body:JSON.stringify({
+model:"mistralai/mistral-7b-instruct",
+messages:[
+{
+role:"user",
+content:"Explain simply for class 1-5 student in Hindi or English and generate 3 quiz questions: " + q
+}
+]
+})
+})
+
+const data=await res.json()
+
+if(data.choices){
+out.innerHTML=data.choices[0].message.content
+}else{
+out.innerHTML="AI error: "+JSON.stringify(data)
+}
+
+}catch(e){
+out.innerHTML="Connection error. Try again."
+}
+}
+let q=document.getElementById('question').value
+let out=document.getElementById('output')
+
+out.style.display='block'
+out.innerHTML="AI is thinking..."
+
+try{
+const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{
+method:"POST",
+headers:{
 "Authorization":"Bearer "+API_KEY,
 "Content-Type":"application/json"
 },
