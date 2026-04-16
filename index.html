@@ -169,18 +169,6 @@ out.innerHTML=data.choices[0].message.content
 out.innerHTML="Error connecting AI. Check API key."
 }
 }
-let q=document.getElementById('question').value
-let lang=document.getElementById('lang').value
-let out=document.getElementById('output')
-out.style.display='block'
-
-if(lang==="Hindi"){
-out.innerHTML="उत्तर: " + q + " का आसान जवाब यहाँ आएगा।<br><br>Quiz:<br>1) ?<br>2) ?<br>3) ?"
-}else{
-out.innerHTML="Answer: Simple explanation for: " + q + "<br><br>Quiz:<br>1) ?<br>2) ?<br>3) ?"
-}
-}
-
 function quiz(){
 let out=document.getElementById('output')
 out.style.display='block'
