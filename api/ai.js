@@ -9,12 +9,9 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-chat",
+        model: "mistralai/mistral-7b-instruct",
         messages: [
-          {
-            role: "user",
-            content: q
-          }
+          { role: "user", content: q }
         ]
       })
     });
@@ -22,12 +19,10 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     res.status(200).json({
-      answer: data.choices?.[0]?.message?.content || "No response"
+      answer: data.choices?.[0]?.message?.content || JSON.stringify(data)
     });
 
-  } catch (err) {
-    res.status(500).json({
-      answer: "Error"
-    });
+  } catch (e) {
+    res.status(500).json({ answer: "error" });
   }
 }
