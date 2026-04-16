@@ -1,0 +1,43 @@
+<script>
+async function askAI(){
+let q=document.getElementById('question').value
+let out=document.getElementById('output')
+
+out.style.display='block'
+out.innerHTML="AI is thinking..."
+
+const res = await fetch("/api/ai",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+question:q,
+class:document.getElementById('class').value,
+subject:document.getElementById('subject').value,
+lang:document.getElementById('lang').value
+})
+})
+
+const data = await res.json()
+out.innerHTML = data.answer
+}
+
+function quiz(){
+let out=document.getElementById('output')
+out.style.display='block'
+out.innerHTML="Quiz:<br>1) ...<br>2) ...<br>3) ..."
+}
+
+function startVoice(){
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'en-IN';
+
+recognition.onresult = function(event){
+document.getElementById('question').value =
+event.results[0][0].transcript;
+}
+
+recognition.start();
+}
+</script>
