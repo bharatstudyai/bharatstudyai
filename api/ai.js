@@ -6,14 +6,15 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://bharatstudyai.vercel.app",
-        "X-Title": "BharatStudyAI"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
+        model: "deepseek/deepseek-chat",
         messages: [
-          { role: "user", content: q }
+          {
+            role: "user",
+            content: q
+          }
         ]
       })
     });
@@ -21,10 +22,12 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     res.status(200).json({
-      answer: data?.choices?.[0]?.message?.content || JSON.stringify(data)
+      answer: data.choices?.[0]?.message?.content || "No response"
     });
 
-  } catch (e) {
-    res.status(500).json({ answer: "Server error" });
+  } catch (err) {
+    res.status(500).json({
+      answer: "Error"
+    });
   }
 }
