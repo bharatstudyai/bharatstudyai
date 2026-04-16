@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BharatStudyAI</title>
+<style>
+body{
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg,#4F9CF9,#6BCB77);
+margin:0;
+padding:0;
+color:#333;
+}
+.header{
+text-align:center;
+padding:20px;
+background:white;
+border-bottom:4px solid #FFD93D;
+}
+.logo{
+font-size:32px;
+font-weight:bold;
+}
+.tag{
+color:#666;
+}
+.container{
+padding:20px;
+max-width:900px;
+margin:auto;
+}
+.card{
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+select,textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+border:2px solid #eee;
+font-size:16px;
+}
+.buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+button{
+flex:1;
+padding:15px;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+.ask{background:#4F9CF9;color:white}
+.quiz{background:#FFD93D}
+.voice{background:#6BCB77;color:white}
+.subjects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:10px;
+margin-top:20px;
+}
+.subject{
+background:#f5f7ff;
+padding:12px;
+border-radius:12px;
+text-align:center;
+font-weight:bold;
+}
+.answer{
+margin-top:20px;
+padding:15px;
+background:#f0fff4;
+border-radius:12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo">🤖 BharatStudyAI</div>
+<div class="tag">Learn Smart for Class 1–5</div>
+</div>
+
+<div class="container">
+<div class="card">
+
+<select id="class">
+<option>Class 1</option>
+<option>Class 2</option>
+<option>Class 3</option>
+<option>Class 4</option>
+<option>Class 5</option>
+</select>
+
+<select id="subject">
+<option>Math</option>
+<option>English</option>
+<option>Hindi</option>
+<option>The World Around Us</option>
+<option>Khel & Yoga</option>
+<option>Arts</option>
+</select>
+
+<select id="lang">
+<option>English</option>
+<option>Hindi</option>
+</select>
+
+<textarea id="question" placeholder="Ask your question..."></textarea>
+
+<div class="buttons">
+<button class="voice" onclick="startVoice()">🎤 Speak</button>
+<button class="ask" onclick="askAI()">Ask AI</button>
+<button class="quiz" onclick="quiz()">Generate Quiz</button>
+</div>
+
+<div id="output" class="answer" style="display:none"></div>
+
+<div class="subjects">
+<div class="subject">📘 Math</div>
+<div class="subject">📖 English</div>
+<div class="subject">📝 Hindi</div>
+<div class="subject">🌍 World</div>
+<div class="subject">🏃 Khel</div>
+<div class="subject">🎨 Arts</div>
+</div>
+
+</div>
+</div>
+
+<script>
+function askAI(){
+let q=document.getElementById('question').value
+let lang=document.getElementById('lang').value
+let out=document.getElementById('output')
+out.style.display='block'
+
+if(lang==="Hindi"){
+out.innerHTML="उत्तर: " + q + " का आसान जवाब यहाँ आएगा।<br><br>Quiz:<br>1) ?<br>2) ?<br>3) ?"
+}else{
+out.innerHTML="Answer: Simple explanation for: " + q + "<br><br>Quiz:<br>1) ?<br>2) ?<br>3) ?"
+}
+}
+
+function quiz(){
+let out=document.getElementById('output')
+out.style.display='block'
+out.innerHTML="Quiz:<br>1) ...<br>2) ...<br>3) ..."
+}
+
+function startVoice(){
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'en-IN';
+recognition.onresult = function(event){
+document.getElementById('question').value = event.results[0][0].transcript;
+}
+recognition.start();
+}
+</script>
+
+</body>
+</html>
