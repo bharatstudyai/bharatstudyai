@@ -152,25 +152,25 @@ border-radius:12px;
 
 <script>
 async function askAI(){
-let q=document.getElementById('question').value
-let out=document.getElementById('output')
+let q = document.getElementById('question').value
+let out = document.getElementById('output')
 
-out.style.display='block'
-out.innerHTML="AI is thinking..."
+out.style.display = 'block'
+out.innerHTML = "AI is thinking..."
 
 try{
-const res=await fetch(
-"https://api.affiliateplus.xyz/api/chatbot?message="
-+ encodeURIComponent(q) +
-"&botname=BharatStudyAI&owner=India"
+const res = await fetch(
+"https://api.allorigins.win/get?url=" + 
+encodeURIComponent("https://api.affiliateplus.xyz/api/chatbot?message=" + q + "&botname=BharatStudyAI&owner=India")
 )
 
-const data=await res.json()
+const data = await res.json()
+const json = JSON.parse(data.contents)
 
-out.innerHTML = data.message
+out.innerHTML = json.message
 
 }catch(e){
-out.innerHTML="AI not responding. Try again."
+out.innerHTML = "AI not responding. Try another question."
 }
 }
 
