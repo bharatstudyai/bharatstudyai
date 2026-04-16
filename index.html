@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BharatStudyAI</title>
+
 <style>
 body{
 font-family: Arial, sans-serif;
@@ -12,30 +13,36 @@ margin:0;
 padding:0;
 color:#333;
 }
-headers:{
+
+.header{
 text-align:center;
 padding:20px;
 background:white;
 border-bottom:4px solid #FFD93D;
 }
+
 .logo{
 font-size:32px;
 font-weight:bold;
 }
+
 .tag{
 color:#666;
 }
+
 .container{
 padding:20px;
 max-width:900px;
 margin:auto;
 }
+
 .card{
 background:white;
 border-radius:20px;
 padding:20px;
 box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
+
 select,textarea{
 width:100%;
 padding:12px;
@@ -44,11 +51,13 @@ border-radius:12px;
 border:2px solid #eee;
 font-size:16px;
 }
+
 .buttons{
 display:flex;
 gap:10px;
 flex-wrap:wrap;
 }
+
 button{
 flex:1;
 padding:15px;
@@ -58,15 +67,18 @@ font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
+
 .ask{background:#4F9CF9;color:white}
 .quiz{background:#FFD93D}
 .voice{background:#6BCB77;color:white}
+
 .subjects{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
 gap:10px;
 margin-top:20px;
 }
+
 .subject{
 background:#f5f7ff;
 padding:12px;
@@ -74,6 +86,7 @@ border-radius:12px;
 text-align:center;
 font-weight:bold;
 }
+
 .answer{
 margin-top:20px;
 padding:15px;
@@ -82,7 +95,9 @@ border-radius:12px;
 }
 </style>
 </head>
+
 <body>
+
 <div class="header">
 <div class="logo">🤖 BharatStudyAI</div>
 <div class="tag">Learn Smart for Class 1–5</div>
@@ -117,7 +132,6 @@ border-radius:12px;
 
 <div class="buttons">
 <button class="voice" onclick="startVoice()">🎤 Speak</button>
-<button class="ask" onclick="askAI()">Ask AI</button>
 <button class="ask" onclick="askAI()">Submit</button>
 <button class="quiz" onclick="quiz()">Generate Quiz</button>
 </div>
@@ -137,7 +151,6 @@ border-radius:12px;
 </div>
 
 <script>
-const API_KEY ="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";
 async function askAI(){
 let q=document.getElementById('question').value
 let out=document.getElementById('output')
@@ -146,55 +159,21 @@ out.style.display='block'
 out.innerHTML="AI is thinking..."
 
 try{
-const res=await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(
-"https://api.affiliateplus.xyz/api/chatbot?message="+q+"&botname=BharatStudyAI&owner=India"
-))
-
-const text=await res.text()
-out.innerHTML=text
-
-}catch(e){
-out.innerHTML="AI temporarily unavailable"
-}
-}
-let q=document.getElementById('question').value
-let out=document.getElementById('output')
-
-out.style.display='block'
-out.innerHTML="AI is thinking..."
-
-try{
-const res=await fetch("https://openrouter.ai/api/v1/chat/completions",{
-method:"POST",
-headers:{
-"Authorization":"Bearer " + API_KEY,
-"Content-Type":"application/json",
-"HTTP-Referer":"https://bharatstudyai.github.io",
-"X-Title":"BharatStudyAI"
-},
-body:JSON.stringify({
-model:"mistralai/mistral-7b-instruct",
-messages:[
-{
-role:"user",
-content:"Explain simply for class 1-5 student in Hindi or English and generate 3 quiz questions: " + q
-}
-]
-})
-})
+const res=await fetch(
+"https://api.affiliateplus.xyz/api/chatbot?message="
++ encodeURIComponent(q) +
+"&botname=BharatStudyAI&owner=India"
+)
 
 const data=await res.json()
 
-if(data.choices){
-out.innerHTML=data.choices[0].message.content
-}else{
-out.innerHTML="AI error: "+JSON.stringify(data)
-}
+out.innerHTML = data.message
 
 }catch(e){
-out.innerHTML="Connection error. Try again."
+out.innerHTML="AI not responding. Try again."
 }
 }
+
 function quiz(){
 let out=document.getElementById('output')
 out.style.display='block'
@@ -204,9 +183,12 @@ out.innerHTML="Quiz:<br>1) ...<br>2) ...<br>3) ..."
 function startVoice(){
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-IN';
+
 recognition.onresult = function(event){
-document.getElementById('question').value = event.results[0][0].transcript;
+document.getElementById('question').value =
+event.results[0][0].transcript;
 }
+
 recognition.start();
 }
 </script>
