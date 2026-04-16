@@ -153,26 +153,16 @@ border-radius:12px;
 <script>
 const API_KEY = "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
 async function askAI(){
-let q = document.getElementById('question').value
-let out = document.getElementById('output')
+let q=document.getElementById('question').value
+let out=document.getElementById('output')
 
-out.style.display = 'block'
-out.innerHTML = "AI is thinking..."
+out.style.display='block'
+out.innerHTML="AI is thinking..."
 
-try{
-const res = await fetch(
-"https://api.allorigins.win/get?url=" + 
-encodeURIComponent("https://api.affiliateplus.xyz/api/chatbot?message=" + q + "&botname=BharatStudyAI&owner=India")
-)
-
+const res = await fetch("/api/ai?q="+encodeURIComponent(q))
 const data = await res.json()
-const json = JSON.parse(data.contents)
 
-out.innerHTML = json.message
-
-}catch(e){
-out.innerHTML = "AI not responding. Try another question."
-}
+out.innerHTML = data.answer
 }
 
 function quiz(){
