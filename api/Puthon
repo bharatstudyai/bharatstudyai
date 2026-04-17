@@ -1,0 +1,49 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+BODMAS_DATA = {
+    "rule": "BODMAS means Brackets, Orders, Division, Multiplication, Addition, Subtraction",
+    "examples": [
+        {
+            "question": "2 + 3 × 4",
+            "steps": [
+                "Multiplication first: 3 × 4 = 12",
+                "Then addition: 2 + 12 = 14"
+            ],
+            "answer": "14"
+        },
+        {
+            "question": "(2 + 3) × 4",
+            "steps": [
+                "Bracket first: 2 + 3 = 5",
+                "Then multiply: 5 × 4 = 20"
+            ],
+            "answer": "20"
+        },
+        {
+            "question": "10 - 6 ÷ 2",
+            "steps": [
+                "Division first: 6 ÷ 2 = 3",
+                "Then subtraction: 10 - 3 = 7"
+            ],
+            "answer": "7"
+        }
+    ]
+}
+
+@app.route("/bodmas")
+def bodmas():
+    return jsonify(BODMAS_DATA)
+
+@app.route("/ask")
+def ask():
+    q = request.args.get("q", "").lower()
+
+    if "bodmas" in q:
+        return jsonify(BODMAS_DATA)
+
+    return jsonify({"answer": "Ask about BODMAS"})
+
+if __name__ == "__main__":
+    app.run()
