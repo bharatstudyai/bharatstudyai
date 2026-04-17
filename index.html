@@ -166,6 +166,11 @@ out.innerHTML = solveBodmas(q)
 
 function solveBodmas(q){
 
+// replace symbols
+q = q.replace(/×/g,'*')
+q = q.replace(/÷/g,'/')
+q = q.replace(/x/g,'*')
+
 // BODMAS math detection
 if(q.includes('+') || q.includes('-') || q.includes('*') || q.includes('/')){
 try{
@@ -173,6 +178,26 @@ let result = Function('"use strict"; return ('+q+')')()
 return "Answer: " + result + "<br><br>Rule: BODMAS → Brackets, Orders, Divide, Multiply, Add, Subtract"
 }catch{
 return "Please enter valid math question"
+}
+}
+
+// theory
+if(q.includes("bodmas")){
+return `
+BODMAS Rule:<br>
+B → Brackets<br>
+O → Orders<br>
+D → Division<br>
+M → Multiplication<br>
+A → Addition<br>
+S → Subtraction<br><br>
+
+Example:<br>
+2 + 3 × 4 = 14
+`
+}
+
+return "Ask math like: 2+2 or 5+3×2 or what is bodmas"
 }
 }
 
