@@ -160,7 +160,6 @@ out.innerHTML="AI is thinking..."
 
 const res = await fetch("/api/ai?q="+encodeURIComponent(q))
 const data = await res.json()
-
 out.innerHTML = data.answer
 }
 
