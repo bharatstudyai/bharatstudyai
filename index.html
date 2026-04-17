@@ -152,21 +152,61 @@ border-radius:12px;
 
 <script>
 async function askAI(){
-let q=document.getElementById('question').value
+let q=document.getElementById('question').value.toLowerCase()
 let out=document.getElementById('output')
 
 out.style.display='block'
 out.innerHTML="AI is thinking..."
 
-const res = await fetch("/api/ai?q="+encodeURIComponent(q))
-const data = await res.json()
-out.innerHTML = data.answer
+setTimeout(()=>{
+out.innerHTML = solveBodmas(q)
+},500)
+
+}
+
+function solveBodmas(q){
+
+// BODMAS math detection
+if(q.includes('+') || q.includes('-') || q.includes('*') || q.includes('/')){
+try{
+let result = Function('"use strict"; return ('+q+')')()
+return "Answer: " + result + "<br><br>Rule: BODMAS → Brackets, Orders, Divide, Multiply, Add, Subtract"
+}catch{
+return "Please enter valid math question"
+}
+}
+
+// theory
+if(q.includes("bodmas")){
+return `
+BODMAS Rule:
+B → Brackets  
+O → Orders (powers)  
+D → Division  
+M → Multiplication  
+A → Addition  
+S → Subtraction  
+
+Example:
+2 + 3 × 4 = 14  
+(not 20)
+
+Because multiply first.
+`
+}
+
+return "Ask math like: 2+2 or 5+3*2 or what is bodmas"
 }
 
 function quiz(){
 let out=document.getElementById('output')
 out.style.display='block'
-out.innerHTML="Quiz:<br>1) ...<br>2) ...<br>3) ..."
+out.innerHTML=`
+BODMAS Quiz:<br><br>
+1) 2 + 3 × 4 = ?<br>
+2) 10 − 2 × 3 = ?<br>
+3) 8 ÷ 2 + 2 = ?<br>
+`
 }
 
 function startVoice(){
