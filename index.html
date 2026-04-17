@@ -156,104 +156,76 @@ let q=document.getElementById('question').value.toLowerCase()
 let out=document.getElementById('output')
 
 out.style.display='block'
-out.innerHTML="AI is thinking..."
-
-setTimeout(()=>{
 out.innerHTML = solveAI(q)
-},300)
 }
 
 function solveAI(q){
 
 // convert symbols
-q = q.replace(/×/g,'*')
-q = q.replace(/÷/g,'/')
-q = q.replace(/x/g,'*')
+q=q.replace(/×/g,'*')
+q=q.replace(/÷/g,'/')
+q=q.replace(/x/g,'*')
 
-/* ---------------- BODMAS ---------------- */
+/* ----------- BODMAS ----------- */
 
-if(q.includes('+') || q.includes('-') || q.includes('*') || q.includes('/')){
+if(q.includes('+')||q.includes('-')||q.includes('*')||q.includes('/')){
 try{
 let result = Function('"use strict"; return ('+q+')')()
-return "Answer: " + result + "<br><br>Rule: BODMAS → Brackets, Orders, Divide, Multiply, Add, Subtract"
+return "Answer: "+result+"<br><br>BODMAS applied"
 }catch{
-return "Please enter valid math question"
+return "Enter valid math question"
 }
 }
 
 if(q.includes("bodmas")){
-return `
-BODMAS Rule:<br>
-B → Brackets<br>
-O → Orders<br>
-D → Division<br>
-M → Multiplication<br>
-A → Addition<br>
-S → Subtraction<br><br>
-
-Example: 2 + 3 × 4 = 14
-`
+return "BODMAS = Brackets, Orders, Division, Multiplication, Addition, Subtraction"
 }
 
-/* ---------------- CLASS 4 ENGLISH ---------------- */
+/* ----------- CLASS 4 ENGLISH ----------- */
 
 if(q.includes("wake up")){
-return "Wake Up: Wake up, wake up! It's a lovely day. Birds are singing. Time to play."
+return "Wake Up: Wake up, wake up! It's a lovely day. Birds are singing."
 }
 
 if(q.includes("neha")){
-return "Neha's Alarm Clock: Neha doesn't like waking early. Birds wake her. She learns waking early is good."
+return "Neha's Alarm Clock: Neha doesn't like waking early. Birds wake her."
 }
 
 if(q.includes("noses")){
 return "Noses: Some noses are big. Some are small. Noses help us smell."
 }
 
-if(q.includes("little fir tree")){
-return "The Little Fir Tree: The fir tree wanted different leaves. It learned its own leaves were best."
+if(q.includes("fir tree")){
+return "Little Fir Tree: Tree wanted new leaves. Learned original leaves best."
 }
 
-if(q.includes("run poem") || q==="run"){
-return "Run: Run in the sun, run in the rain, run and enjoy again."
+if(q.includes("run")){
+return "Run: Run in the sun, run in the rain."
 }
 
 if(q.includes("nasruddin")){
-return "Nasruddin's Aim: Nasruddin shoots arrows and gives funny reasons."
+return "Nasruddin's Aim: Funny story about arrows."
 }
 
 if(q.includes("class 4 english")){
-return `
-Class 4 English Chapters:<br>
-1. Wake Up<br>
-2. Neha's Alarm Clock<br>
-3. Noses<br>
-4. The Little Fir Tree<br>
-5. Run<br>
-6. Nasruddin's Aim
-`
+return "Chapters: Wake Up, Neha Alarm Clock, Noses, Little Fir Tree, Run, Nasruddin"
 }
 
-return "Try: 2+2 OR what is bodmas OR wake up OR neha"
+return "Try: 2+2 or wake up or neha or bodmas"
 }
 
 function quiz(){
 let out=document.getElementById('output')
 out.style.display='block'
-out.innerHTML=`
-Quiz:<br><br>
-1) 2 + 3 × 4 = ?<br>
-2) Who is Neha?<br>
-3) What does nose do?<br>
-`
+out.innerHTML="Quiz:<br>1)2+3×4=?<br>2)Who is Neha?<br>3)What do noses do?"
 }
 
 function startVoice(){
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-IN';
+recognition.lang='en-IN';
 
-recognition.onresult = function(event){
-document.getElementById('question').value =
-event.results[0][0].transcript;
+recognition.onresult=function(e){
+document.getElementById('question').value=e.results[0][0].transcript;
 }
 
 recognition.start();
