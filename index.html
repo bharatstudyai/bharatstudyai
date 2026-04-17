@@ -151,32 +151,27 @@ border-radius:12px;
 </div>
 
 <script>
-async function askAI(){
+function askAI(){
 let q=document.getElementById('question').value.toLowerCase()
 let out=document.getElementById('output')
 
 out.style.display='block'
 out.innerHTML="AI is thinking..."
 
-async function askAI(){
-let q=document.getElementById('question').value.toLowerCase()
-let out=document.getElementById('output')
-
-out.style.display='block'
-
-out.innerHTML = solveBodmas(q)
+setTimeout(()=>{
+out.innerHTML = solveAI(q)
+},300)
 }
 
-}
+function solveAI(q){
 
-function solveBodmas(q){
-
-// replace symbols
+// convert symbols
 q = q.replace(/×/g,'*')
 q = q.replace(/÷/g,'/')
 q = q.replace(/x/g,'*')
 
-// BODMAS math detection
+/* ---------------- BODMAS ---------------- */
+
 if(q.includes('+') || q.includes('-') || q.includes('*') || q.includes('/')){
 try{
 let result = Function('"use strict"; return ('+q+')')()
@@ -186,7 +181,6 @@ return "Please enter valid math question"
 }
 }
 
-// theory
 if(q.includes("bodmas")){
 return `
 BODMAS Rule:<br>
@@ -197,87 +191,59 @@ M → Multiplication<br>
 A → Addition<br>
 S → Subtraction<br><br>
 
-Example:<br>
-2 + 3 × 4 = 14
+Example: 2 + 3 × 4 = 14
 `
 }
 
-return "Ask math like: 2+2 or 5+3×2 or what is bodmas"
-}
+/* ---------------- CLASS 4 ENGLISH ---------------- */
+
+if(q.includes("wake up")){
+return "Wake Up: Wake up, wake up! It's a lovely day. Birds are singing. Time to play."
 }
 
-// theory
-if(q.includes("bodmas")){
+if(q.includes("neha")){
+return "Neha's Alarm Clock: Neha doesn't like waking early. Birds wake her. She learns waking early is good."
+}
+
+if(q.includes("noses")){
+return "Noses: Some noses are big. Some are small. Noses help us smell."
+}
+
+if(q.includes("little fir tree")){
+return "The Little Fir Tree: The fir tree wanted different leaves. It learned its own leaves were best."
+}
+
+if(q.includes("run poem") || q==="run"){
+return "Run: Run in the sun, run in the rain, run and enjoy again."
+}
+
+if(q.includes("nasruddin")){
+return "Nasruddin's Aim: Nasruddin shoots arrows and gives funny reasons."
+}
+
+if(q.includes("class 4 english")){
 return `
-BODMAS Rule:
-B → Brackets  
-O → Orders (powers)  
-D → Division  
-M → Multiplication  
-A → Addition  
-S → Subtraction  
-
-Example:
-2 + 3 × 4 = 14  
-(not 20)
-
-Because multiply first.
+Class 4 English Chapters:<br>
+1. Wake Up<br>
+2. Neha's Alarm Clock<br>
+3. Noses<br>
+4. The Little Fir Tree<br>
+5. Run<br>
+6. Nasruddin's Aim
 `
 }
 
-return "Ask math like: 2+2 or 5+3*2 or what is bodmas"
+return "Try: 2+2 OR what is bodmas OR wake up OR neha"
 }
 
 function quiz(){
 let out=document.getElementById('output')
 out.style.display='block'
 out.innerHTML=`
-BODMAS Quiz:<br><br>
+Quiz:<br><br>
 1) 2 + 3 × 4 = ?<br>
-2) 10 − 2 × 3 = ?<br>
-3) 8 ÷ 2 + 2 = ?<br>
-`
-}
-
-// CLASS 4 ENGLISH LITERATURE
-
-if(q.includes("neha alarm clock")){
-return "Neha's Alarm Clock: Neha does not like waking early. Birds wake her up. She learns waking early is good."
-}
-
-if(q.includes("wake up")){
-return "Wake Up poem: Wake up, wake up! It's a lovely day. Birds are singing. Time to play."
-}
-
-if(q.includes("noses")){
-return "Noses poem: Some noses are big. Some noses are small. Noses help us smell."
-}
-
-if(q.includes("little fir tree")){
-return "The Little Fir Tree: A fir tree wanted different leaves. It learned its original leaves were best."
-}
-
-if(q.includes("run")){
-return "Run poem: Run in the sun. Run in the rain. Run and enjoy."
-}
-
-if(q.includes("nasruddin")){
-return "Nasruddin's Aim: Nasruddin shoots arrows. He gives funny reasons. Story teaches humor."
-}
-
-if(q.includes("milk")){
-return "Why story: Milk comes from cow. We drink milk for strength."
-}
-
-if(q.includes("class 4 english")){
-return `
-Class 4 English Chapters:
-1. Wake Up (Poem)
-2. Neha's Alarm Clock
-3. Noses (Poem)
-4. The Little Fir Tree
-5. Run (Poem)
-6. Nasruddin's Aim
+2) Who is Neha?<br>
+3) What does nose do?<br>
 `
 }
 
