@@ -158,9 +158,14 @@ let out=document.getElementById('output')
 out.style.display='block'
 out.innerHTML="AI is thinking..."
 
-setTimeout(()=>{
+async function askAI(){
+let q=document.getElementById('question').value.toLowerCase()
+let out=document.getElementById('output')
+
+out.style.display='block'
+
 out.innerHTML = solveBodmas(q)
-},500)
+}
 
 }
 
