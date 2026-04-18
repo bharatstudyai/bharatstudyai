@@ -193,6 +193,30 @@ chapter.innerHTML=`
 
 })
   
+function showSummary(){
+let ch=document.getElementById("chapter").value
+document.getElementById("output").style.display="block"
+document.getElementById("output").innerHTML="Summary of "+ch
+}
+
+function showKeywords(){
+let ch=document.getElementById("chapter").value
+document.getElementById("output").style.display="block"
+document.getElementById("output").innerHTML="Keywords of "+ch
+}
+
+function showExplain(){
+let ch=document.getElementById("chapter").value
+document.getElementById("output").style.display="block"
+document.getElementById("output").innerHTML="Explanation of "+ch
+}
+
+function showQA(){
+let ch=document.getElementById("chapter").value
+document.getElementById("output").style.display="block"
+document.getElementById("output").innerHTML="Q&A of "+ch
+}
+  
 function askAI(){
 let q=document.getElementById('question').value.toLowerCase()
 let out=document.getElementById('output')
