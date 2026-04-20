@@ -185,6 +185,27 @@ chapter.innerHTML=`
 
 })
   
+function showEnglish(){
+document.getElementById("chapters").innerHTML=`
+
+<h3>Class 4 English (Santoor)</h3>
+
+<button onclick="openChapter(1)">1. Together We Can</button>
+<button onclick="openChapter(2)">2. The Tinkling Bells</button>
+<button onclick="openChapter(3)">3. Be Smart, Be Safe</button>
+<button onclick="openChapter(4)">4. One Thing at a Time</button>
+<button onclick="openChapter(5)">5. The Old Stag</button>
+<button onclick="openChapter(6)">6. Braille</button>
+<button onclick="openChapter(7)">7. Fit Body Fit Mind</button>
+<button onclick="openChapter(8)">8. Lagori Champions</button>
+<button onclick="openChapter(9)">9. Hekko</button>
+<button onclick="openChapter(10)">10. The Swing</button>
+<button onclick="openChapter(11)">11. Magical Mountains</button>
+<button onclick="openChapter(12)">12. Maheshwar</button>
+
+`;
+}
+  
 function askAI(){
 let q=document.getElementById('question').value.toLowerCase()
 let out=document.getElementById('output')
