@@ -203,7 +203,126 @@ document.getElementById("chapters").innerHTML=`
 <button onclick="openChapter(11)">11. Magical Mountains</button>
 <button onclick="openChapter(12)">12. Maheshwar</button>
 
-`;
+`
+}
+
+
+function openChapter(num){
+
+let content = document.getElementById("chapterContent")
+content.style.display="block"
+
+let title=[
+"",
+"Together We Can",
+"The Tinkling Bells",
+"Be Smart Be Safe",
+"One Thing at a Time",
+"The Old Stag",
+"Braille",
+"Fit Body Fit Mind",
+"Lagori Champions",
+"Hekko",
+"The Swing",
+"Magical Mountains",
+"Maheshwar"
+]
+
+content.innerHTML=`
+
+<h2>Chapter ${num} — ${title[num]}</h2>
+
+<div class="buttons">
+
+<button onclick="voiceRead()">🔊 Read</button>
+<button onclick="speakQuestion()">🎤 Speak</button>
+<button onclick="askChapterAI(${num})">🤖 Ask AI</button>
+
+<button onclick="aiExplain(${num})">📘 Explain</button>
+<button onclick="aiSummary(${num})">🧠 Summary</button>
+<button onclick="aiKeywords(${num})">🔑 Keywords</button>
+<button onclick="aiQA(${num})">❓ Q&A</button>
+<button onclick="aiQuiz(${num})">📝 Quiz</button>
+
+</div>
+
+<textarea id="aiQuestion" placeholder="Ask about this chapter..."></textarea>
+
+<div id="aiContent" style="margin-top:15px"></div>
+
+<div class="buttons">
+<button onclick="showEnglish()">⬅ Back</button>
+<button onclick="openChapter(${num-1})">⬅ Previous</button>
+<button onclick="openChapter(${num+1})">Next ➡</button>
+</div>
+
+`
+}
+
+
+
+function voiceRead(){
+let text=document.getElementById("chapterContent").innerText
+let speech=new SpeechSynthesisUtterance(text)
+speech.lang="en-IN"
+speechSynthesis.speak(speech)
+}
+
+
+
+function speakQuestion(){
+const recognition =
+new(window.SpeechRecognition||window.webkitSpeechRecognition)()
+
+recognition.lang="en-IN"
+
+recognition.onresult=function(e){
+document.getElementById("aiQuestion").value =
+e.results[0][0].transcript
+}
+
+recognition.start()
+}
+
+
+
+function askChapterAI(num){
+
+let q=document.getElementById("aiQuestion").value.toLowerCase()
+let out=document.getElementById("aiContent")
+
+if(q.includes("summary")){ aiSummary(num); return }
+if(q.includes("explain")){ aiExplain(num); return }
+if(q.includes("question")){ aiQA(num); return }
+
+out.innerHTML="Answer about chapter "+num+": "+q
+}
+
+
+
+function aiExplain(n){
+document.getElementById("aiContent").innerHTML=
+"This chapter explains lesson, values and learning for students."
+}
+
+function aiSummary(n){
+document.getElementById("aiContent").innerHTML=
+"Short summary of chapter "+n
+}
+
+function aiKeywords(n){
+document.getElementById("aiContent").innerHTML=
+"Important • Learn • Story • Values • Students"
+}
+
+function aiQA(n){
+document.getElementById("aiContent").innerHTML=
+"Q1 What is lesson?<br>Ans Moral learning"
+}
+
+function aiQuiz(n){
+document.getElementById("aiContent").innerHTML=
+"1 What is main idea?<br>2 What lesson?<br>3 Who are characters?"
 }
   
 function askAI(){
