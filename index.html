@@ -130,16 +130,6 @@ border-radius:12px;
   
 <textarea id="question" placeholder="Ask your question..."></textarea>
 
-content.innerHTML=`
-
-<h2>Chapter ${num} — ${title[num]}</h2>
-
-...AI buttons here...
-
-<textarea id="aiQuestion"></textarea>
-
-<div id="aiContent"></div>
-
 <div class="buttons">
 <button onclick="showEnglish()">⬅ Back</button>
 <button onclick="if(${num}>1) openChapter(${num-1})">⬅ Previous</button>
