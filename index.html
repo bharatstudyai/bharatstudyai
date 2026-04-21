@@ -11,6 +11,7 @@ font-family: Arial, sans-serif;
 background: linear-gradient(135deg,#4F9CF9,#6BCB77);
 margin:0;
 padding:0;
+color:#333;
 }
 
 .header{
@@ -20,8 +21,14 @@ background:white;
 border-bottom:4px solid #FFD93D;
 }
 
-.logo{font-size:30px;font-weight:bold}
-.tag{color:#666}
+.logo{
+font-size:32px;
+font-weight:bold;
+}
+
+.tag{
+color:#666;
+}
 
 .container{
 padding:20px;
@@ -36,6 +43,35 @@ padding:20px;
 box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
+select,textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+border:2px solid #eee;
+font-size:16px;
+}
+
+.buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+button{
+flex:1;
+padding:15px;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.ask{background:#4F9CF9;color:white}
+.quiz{background:#FFD93D}
+.voice{background:#6BCB77;color:white}
+
 .subjects{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
@@ -49,23 +85,6 @@ padding:12px;
 border-radius:12px;
 text-align:center;
 font-weight:bold;
-cursor:pointer;
-}
-
-button{
-padding:10px;
-border:none;
-border-radius:10px;
-background:#4F9CF9;
-color:white;
-cursor:pointer;
-}
-
-.buttons{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-margin-top:10px;
 }
 
 .answer{
@@ -87,6 +106,40 @@ border-radius:12px;
 <div class="container">
 <div class="card">
 
+<select id="class">
+<option>Class 1</option>
+<option>Class 2</option>
+<option>Class 3</option>
+<option>Class 4</option>
+<option>Class 5</option>
+</select>
+
+<select id="subject">
+<option>Math</option>
+<option>English</option>
+<option>Hindi</option>
+<option>The World Around Us</option>
+<option>Khel & Yoga</option>
+<option>Arts</option>
+</select>
+
+<select id="lang">
+<option>English</option>
+<option>Hindi</option>
+</select>
+  
+<textarea id="question" placeholder="Ask your question..."></textarea>
+
+<div class="buttons">
+<button onclick="showEnglish()">⬅ Back</button>
+<button onclick="if(${num}>1) openChapter(${num-1})">⬅ Previous</button>
+<button onclick="if(${num}<12) openChapter(${num+1})">Next ➡</button>
+</div>
+
+`
+
+<div id="output" class="answer" style="display:none"></div>
+
 <div class="subjects">
 <div class="subject">📘 Math</div>
 <div class="subject" onclick="showEnglish()">📖 English</div>
@@ -95,19 +148,16 @@ border-radius:12px;
 <div class="subject">🏃 Khel</div>
 <div class="subject">🎨 Arts</div>
 </div>
-
-<div id="chapters"></div>
+  
+<div id="chapters" style="margin-top:20px;"></div>
 <div id="chapterContent" class="answer" style="display:none"></div>
 
 </div>
 </div>
 
 <script>
-
+  
 function showEnglish(){
-
-document.getElementById("chapterContent").style.display="none"
-
 document.getElementById("chapters").innerHTML=`
 
 <h3>Class 4 English (Santoor)</h3>
@@ -130,8 +180,6 @@ document.getElementById("chapters").innerHTML=`
 
 
 function openChapter(num){
-
-document.getElementById("chapters").innerHTML=""
 
 let content = document.getElementById("chapterContent")
 content.style.display="block"
@@ -158,40 +206,31 @@ content.innerHTML=`
 
 <div class="buttons">
 
-<button onclick="voiceRead()">🔊 Listen</button>
+<button onclick="voiceRead()">🔊 Read</button>
 <button onclick="speakQuestion()">🎤 Speak</button>
-<button onclick="askAI(${num})">🤖 Ask AI</button>
+<button onclick="askChapterAI(${num})">🤖 Ask AI</button>
 
-<button onclick="summary(${num})">🧠 Summary</button>
-<button onclick="explain(${num})">📘 Explain</button>
-<button onclick="keywords(${num})">🔑 Keywords</button>
-<button onclick="qa(${num})">❓ Q&A</button>
-<button onclick="quiz(${num})">📝 Quiz</button>
+<button onclick="aiExplain(${num})">📘 Explain</button>
+<button onclick="aiSummary(${num})">🧠 Summary</button>
+<button onclick="aiKeywords(${num})">🔑 Keywords</button>
+<button onclick="aiQA(${num})">❓ Q&A</button>
+<button onclick="aiQuiz(${num})">📝 Quiz</button>
 
 </div>
 
-<textarea id="aiQuestion" placeholder="Ask about this chapter..." 
-style="width:100%;margin-top:10px;padding:10px;border-radius:8px"></textarea>
+<textarea id="aiQuestion" placeholder="Ask about this chapter..."></textarea>
 
-<div id="aiOutput" style="margin-top:15px"></div>
+<div id="aiContent" style="margin-top:15px"></div>
 
 <div class="buttons">
 <button onclick="showEnglish()">⬅ Back</button>
-<button onclick="prevChapter(${num})">⬅ Previous</button>
-<button onclick="nextChapter(${num})">Next ➡</button>
+<button onclick="openChapter(${num-1})">⬅ Previous</button>
+<button onclick="openChapter(${num+1})">Next ➡</button>
 </div>
 
 `
 }
 
-
-function prevChapter(n){
-if(n>1) openChapter(n-1)
-}
-
-function nextChapter(n){
-if(n<12) openChapter(n+1)
-}
 
 
 function voiceRead(){
@@ -202,9 +241,10 @@ speechSynthesis.speak(speech)
 }
 
 
+
 function speakQuestion(){
 const recognition =
-new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+new(window.SpeechRecognition||window.webkitSpeechRecognition)()
 
 recognition.lang="en-IN"
 
@@ -217,38 +257,404 @@ recognition.start()
 }
 
 
-function askAI(n){
-let q=document.getElementById("aiQuestion").value
-document.getElementById("aiOutput").innerHTML=
-"AI Answer for chapter "+n+": "+q
+
+function askChapterAI(num){
+
+let q=document.getElementById("aiQuestion").value.toLowerCase()
+let out=document.getElementById("aiContent")
+
+if(q.includes("summary")){ aiSummary(num); return }
+if(q.includes("explain")){ aiExplain(num); return }
+if(q.includes("question")){ aiQA(num); return }
+
+out.innerHTML="Answer about chapter "+num+": "+q
 }
 
 
-function summary(n){
-document.getElementById("aiOutput").innerHTML=
-"Summary of chapter "+n
+
+function aiExplain(n){
+document.getElementById("aiContent").innerHTML=
+"This chapter explains lesson, values and learning for students."
 }
 
-function explain(n){
-document.getElementById("aiOutput").innerHTML=
-"Explanation of chapter "+n
+function aiSummary(n){
+document.getElementById("aiContent").innerHTML=
+"Short summary of chapter "+n
 }
 
-function keywords(n){
-document.getElementById("aiOutput").innerHTML=
-"Keywords of chapter "+n
+function aiKeywords(n){
+document.getElementById("aiContent").innerHTML=
+"Important • Learn • Story • Values • Students"
 }
 
-function qa(n){
-document.getElementById("aiOutput").innerHTML=
-"Questions & Answers of chapter "+n
+function aiQA(n){
+document.getElementById("aiContent").innerHTML=
+"Q1 What is lesson?<br>Ans Moral learning"
 }
 
-function quiz(n){
-document.getElementById("aiOutput").innerHTML=
-"Quiz of chapter "+n
+function aiQuiz(n){
+document.getElementById("aiContent").innerHTML=
+"1 What is main idea?<br>2 What lesson?<br>3 Who are characters?"
+}
+  
+function askAI(){
+let q=document.getElementById('question').value.toLowerCase()
+let out=document.getElementById('output')
+
+out.style.display='block'
+out.innerHTML = solveAI(q)
 }
 
+function solveAI(q){
+
+// convert symbols
+q=q.replace(/×/g,'*')
+q=q.replace(/÷/g,'/')
+q=q.replace(/x/g,'*')
+
+/* ----------- BODMAS ----------- */
+
+if(q.includes('+')||q.includes('-')||q.includes('*')||q.includes('/')){
+try{
+let result = Function('"use strict"; return ('+q+')')()
+return "Answer: "+result+"<br><br>BODMAS applied"
+}catch{
+return "Enter valid math question"
+}
+}
+
+if(q.includes("bodmas")){
+return "BODMAS = Brackets, Orders, Division, Multiplication, Addition, Subtraction"
+}
+
+/* ----------- CLASS 4 ENGLISH ----------- */
+
+if(q.includes("wake up")){
+return "Wake Up: Wake up, wake up! It's a lovely day. Birds are singing."
+}
+
+if(q.includes("neha")){
+return "Neha's Alarm Clock: Neha doesn't like waking early. Birds wake her."
+}
+
+if(q.includes("noses")){
+return "Noses: Some noses are big. Some are small. Noses help us smell."
+}
+
+if(q.includes("fir tree")){
+return "Little Fir Tree: Tree wanted new leaves. Learned original leaves best."
+}
+
+if(q.includes("run")){
+return "Run: Run in the sun, run in the rain."
+}
+
+if(q.includes("nasruddin")){
+return "Nasruddin's Aim: Funny story about arrows."
+}
+
+if(q.includes("old english book")){
+return "Chapters: Wake Up, Neha Alarm Clock, Noses, Little Fir Tree, Run, Nasruddin"
+}
+  
+/* ===============================
+CLASS 4 SANTOOR FULL CONTENT
+================================*/
+
+/* CH 1 — TOGETHER WE CAN */
+
+if(q.includes("together we can summary")){
+return "Together We Can: Children learn teamwork. Helping each other makes work easy."
+}
+
+if(q.includes("together we can keywords")){
+return "Together: work with others | Teamwork: group work | Share: give part | Help: assist | Cooperate: work peacefully"
+}
+
+if(q.includes("together we can explanation")){
+return "This chapter teaches unity. When we work together, we succeed. Helping friends builds friendship."
+}
+
+if(q.includes("together we can questions")){
+return "Q: What do children learn? A: Teamwork. Q: Why teamwork? A: Work becomes easy."
+}
+
+if(q.includes("together we can")){
+return "Chapter 1 Together We Can — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 2 — TINKLING BELLS */
+
+if(q.includes("tinkling bells summary")){
+return "The Tinkling Bells: Sweet bell sounds bring happiness and joy everywhere."
+}
+
+if(q.includes("tinkling bells keywords")){
+return "Tinkling: soft ringing | Bells: metal sound | Joy: happiness"
+}
+
+if(q.includes("tinkling bells explanation")){
+return "The poem describes pleasant bell sounds that make environment cheerful."
+}
+
+if(q.includes("tinkling bells questions")){
+return "Q: What sound do bells make? A: Tinkling sound. Q: What do bells spread? A: Happiness."
+}
+
+if(q.includes("tinkling bells")){
+return "Chapter 2 The Tinkling Bells — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 3 — BE SMART BE SAFE */
+
+if(q.includes("be smart summary")){
+return "Be Smart Be Safe: Follow safety rules at home, school and road."
+}
+
+if(q.includes("be smart keywords")){
+return "Safe: protected | Careful: alert | Rule: instruction"
+}
+
+if(q.includes("be smart explanation")){
+return "The chapter teaches children to be careful and follow safety rules."
+}
+
+if(q.includes("be smart questions")){
+return "Q: Why follow rules? A: To stay safe."
+}
+
+if(q.includes("be smart")){
+return "Chapter 3 Be Smart Be Safe — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 4 — ONE THING AT A TIME */
+
+if(q.includes("one thing summary")){
+return "One Thing At A Time: Do work slowly and properly."
+}
+
+if(q.includes("one thing keywords")){
+return "Slowly: not fast | Neatly: clean work | Focus: attention"
+}
+
+if(q.includes("one thing explanation")){
+return "The lesson teaches doing one task properly without hurry."
+}
+
+if(q.includes("one thing questions")){
+return "Q: What should we do? A: One thing at a time."
+}
+
+if(q.includes("one thing at a time")){
+return "Chapter 4 One Thing At A Time — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 5 — OLD STAG */
+
+if(q.includes("old stag summary")){
+return "Old Stag: The stag learns not to be proud."
+}
+
+if(q.includes("old stag keywords")){
+return "Stag: male deer | Proud: ego | Lesson: teaching"
+}
+
+if(q.includes("old stag explanation")){
+return "The story teaches humility and not to be proud."
+}
+
+if(q.includes("old stag questions")){
+return "Q: What lesson? A: Do not be proud."
+}
+
+if(q.includes("old stag")){
+return "Chapter 5 Old Stag — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 6 — BRAILLE */
+
+if(q.includes("braille summary")){
+return "Braille: Blind people read using raised dots."
+}
+
+if(q.includes("braille keywords")){
+return "Blind: cannot see | Dots: raised points | Read: understand text"
+}
+
+if(q.includes("braille explanation")){
+return "Braille helps visually impaired people read and write."
+}
+
+if(q.includes("braille questions")){
+return "Q: Who uses Braille? A: Blind people."
+}
+
+if(q.includes("braille")){
+return "Chapter 6 Braille — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 7 — FIT BODY */
+
+if(q.includes("fit body summary")){
+return "Fit Body Fit Mind: Exercise keeps us healthy."
+}
+
+if(q.includes("fit body keywords")){
+return "Fit: healthy | Exercise: physical activity"
+}
+
+if(q.includes("fit body explanation")){
+return "Healthy body helps active mind."
+}
+
+if(q.includes("fit body questions")){
+return "Q: Why exercise? A: To stay healthy."
+}
+
+if(q.includes("fit body")){
+return "Chapter 7 Fit Body — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 8 — LAGORI */
+
+if(q.includes("lagori summary")){
+return "Lagori Champions: Children play lagori and learn teamwork."
+}
+
+if(q.includes("lagori keywords")){
+return "Lagori: outdoor game | Team: group"
+}
+
+if(q.includes("lagori explanation")){
+return "The story shows teamwork in sports."
+}
+
+if(q.includes("lagori questions")){
+return "Q: What game? A: Lagori."
+}
+
+if(q.includes("lagori")){
+return "Chapter 8 Lagori — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 9 — HEKKO */
+
+if(q.includes("hekko summary")){
+return "Hekko: Story of friendship."
+}
+
+if(q.includes("hekko keywords")){
+return "Friend: companion | Kind: caring"
+}
+
+if(q.includes("hekko explanation")){
+return "The story teaches kindness."
+}
+
+if(q.includes("hekko questions")){
+return "Q: What lesson? A: Be kind."
+}
+
+if(q.includes("hekko")){
+return "Chapter 9 Hekko — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 10 — SWING */
+
+if(q.includes("swing summary")){
+return "The Swing: Children enjoy swinging."
+}
+
+if(q.includes("swing keywords")){
+return "Swing: hanging seat | Fun: enjoyment"
+}
+
+if(q.includes("swing explanation")){
+return "The poem describes joy of swinging."
+}
+
+if(q.includes("swing questions")){
+return "Q: What is fun? A: Swing."
+}
+
+if(q.includes("swing")){
+return "Chapter 10 Swing — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 11 — MAGICAL MOUNTAINS */
+
+if(q.includes("magical mountains summary")){
+return "Journey to Magical Mountains: Beautiful mountain trip."
+}
+
+if(q.includes("magical mountains keywords")){
+return "Mountain: high hill | Journey: travel"
+}
+
+if(q.includes("magical mountains explanation")){
+return "The story describes nature beauty."
+}
+
+if(q.includes("magical mountains questions")){
+return "Q: Where journey? A: Mountains."
+}
+
+if(q.includes("magical mountains")){
+return "Chapter 11 Magical Mountains — ask summary / keywords / explanation / questions"
+}
+
+
+/* CH 12 — MAHESHWAR */
+
+if(q.includes("maheshwar summary")){
+return "Maheshwar: Historic town near Narmada river."
+}
+
+if(q.includes("maheshwar keywords")){
+return "Town: small city | River: water flow"
+}
+
+if(q.includes("maheshwar explanation")){
+return "The lesson describes Maheshwar culture."
+}
+
+if(q.includes("maheshwar questions")){
+return "Q: Where Maheshwar? A: Near Narmada."
+}
+
+if(q.includes("maheshwar")){
+return "Chapter 12 Maheshwar — ask summary / keywords / explanation / questions"
+}
+  
+return "Try: 2+2 or wake up or neha or bodmas"
+}
+
+function quiz(){
+let out=document.getElementById('output')
+out.style.display='block'
+out.innerHTML="Quiz:<br>1)2+3×4=?<br>2)Who is Neha?<br>3)What do noses do?"
+}
+
+function startVoice(){
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang='en-IN';
+
+recognition.onresult=function(e){
+document.getElementById('question').value=e.results[0][0].transcript;
+}
+
+recognition.start();
+}
 </script>
 
 </body>
