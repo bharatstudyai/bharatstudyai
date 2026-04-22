@@ -130,6 +130,13 @@ border-radius:12px;
 
 <textarea id="question" placeholder="Ask your question..."></textarea>
 
+<!-- ✅ ADDED BUTTONS -->
+<div class="buttons">
+<button class="voice" onclick="startVoice()">🎤 Speak</button>
+<button class="ask" onclick="askAI()">Submit</button>
+<button class="quiz" onclick="quiz()">Generate Quiz</button>
+</div>
+
 <div id="output" class="answer" style="display:none"></div>
 
 <div class="subjects">
@@ -220,6 +227,28 @@ content.innerHTML=`
 </div>
 
 `
+}
+
+function askAI(){
+let q=document.getElementById('question').value
+let out=document.getElementById('output')
+out.style.display='block'
+out.innerHTML="Answer: "+q
+}
+
+function quiz(){
+let out=document.getElementById('output')
+out.style.display='block'
+out.innerHTML="Quiz:<br>1)2+2=?<br>2)What is lesson?"
+}
+
+function startVoice(){
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang='en-IN';
+recognition.onresult=function(e){
+document.getElementById('question').value=e.results[0][0].transcript;
+}
+recognition.start();
 }
 
 function voiceRead(){
