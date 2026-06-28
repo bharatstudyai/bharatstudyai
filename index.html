@@ -131,8 +131,10 @@ border-radius:12px;
 <textarea id="question" placeholder="Ask your question..."></textarea>
 
 <div class="buttons">
-<button onclick="showEnglish()">⬅ Back</button>
-<button onclick="showEnglish()">📖 Open English Chapters</button>
+<button class="ask" onclick="askAI()">🤖 Submit</button>
+<button class="voice" onclick="startVoice()">🎤 Speak</button>
+<button class="quiz" onclick="quiz()">📝 Generate Quiz</button>
+<button onclick="showEnglish()">📖 English Chapters</button>
 </div>
 
 <div id="output" class="answer" style="display:none"></div>
