@@ -314,12 +314,13 @@ q=q.replace(/x/g,'*')
 /* ----------- BODMAS ----------- */
 
 if(q.includes('+')||q.includes('-')||q.includes('*')||q.includes('/')){
-try{
-let result = Function('"use strict"; return ('+q+')')()
-return "Answer: "+result+"<br><br>BODMAS applied"
-}catch{
-return "Enter valid math question"
-}
+if (/[0-9]/.test(q) && /[+\-*/()]/.test(q)) {
+    try {
+        let result = Function('"use strict"; return (' + q + ')')();
+        return "Answer: " + result + "<br><br>BODMAS applied";
+    } catch {
+        return "Enter valid math question";
+    }
 }
 
 if(q.includes("bodmas")){
