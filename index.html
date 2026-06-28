@@ -314,18 +314,24 @@ q=q.replace(/x/g,'*')
 
 /* ----------- BODMAS ----------- */
 
-if(q.includes('+')||q.includes('-')||q.includes('*')||q.includes('/')){
+/* ----------- BODMAS ----------- */
+
+// convert symbols
+q = q.replace(/×/g, "*");
+q = q.replace(/÷/g, "/");
+q = q.replace(/x/g, "*");
+
 if (/[0-9]/.test(q) && /[+\-*/()]/.test(q)) {
     try {
         let result = Function('"use strict"; return (' + q + ')')();
-        return "Answer: " + result + "<br><br>BODMAS applied";
-    } catch {
+        return "Answer: " + result + "<br><br>✅ BODMAS applied";
+    } catch (e) {
         return "Enter valid math question";
     }
 }
 
-if(q.includes("bodmas")){
-return "BODMAS = Brackets, Orders, Division, Multiplication, Addition, Subtraction"
+if (q.includes("bodmas")) {
+    return "BODMAS = Brackets, Orders, Division, Multiplication, Addition, Subtraction";
 }
 
 /* ----------- CLASS 4 ENGLISH ----------- */
