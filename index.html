@@ -222,9 +222,10 @@ content.innerHTML=`
 <div id="aiContent" style="margin-top:15px"></div>
 
 <div class="buttons">
-<button onclick="showEnglish()">⬅ Back</button>
-<button onclick="openChapter(${num-1})">⬅ Previous</button>
-<button onclick="openChapter(${num+1})">Next ➡</button>
+<button class="ask" onclick="askAI()">🤖 Submit</button>
+<button class="voice" onclick="startVoice()">🎤 Speak</button>
+<button class="quiz" onclick="quiz()">📝 Generate Quiz</button>
+<button onclick="showEnglish()">📖 English Chapters</button>
 </div>
 
 `
