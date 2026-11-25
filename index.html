@@ -93,6 +93,23 @@ padding:15px;
 background:#f0fff4;
 border-radius:12px;
 }
+  
+#reader{display:none;position:fixed;inset:0;background:#f6f8fc;z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.r-bar{position:sticky;top:0;display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-bottom:3px solid #FFD93D;z-index:2}
+.r-bar button{flex:none;padding:10px 14px;font-size:15px;background:#eef2ff}
+.r-bar #pageBtn{background:#4F9CF9;color:#fff}
+.r-title{flex:1;text-align:center;font-weight:bold;font-size:14px}
+.r-pages{max-width:800px;margin:0 auto;padding:12px}
+.r-page{background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:16px;padding:6px;scroll-margin-top:70px}
+.r-page img{width:100%;display:block;border-radius:8px;min-height:200px}
+.r-label{text-align:center;color:#888;font-size:13px;margin:6px 0}
+#sorter{display:none;position:fixed;top:66px;right:10px;width:min(320px,92vw);max-height:70vh;overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:14px;z-index:1001}
+.s-go{display:flex;gap:8px;margin-bottom:12px}
+.s-go input{flex:1;padding:10px;border:2px solid #eee;border-radius:10px;font-size:16px;min-width:0}
+.s-go button{flex:none;padding:10px 16px;background:#6BCB77;color:#fff}
+.s-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.s-grid button{flex:none;padding:10px 0;background:#eef2ff}
+.s-grid button.on{background:#4F9CF9;color:#fff}
 </style>
 </head>
 
