@@ -689,6 +689,72 @@ document.getElementById('question').value=e.results[0][0].transcript;
 
 recognition.start();
 }
+/* ===== TEXTBOOK READER ===== */
+const READER_BOOKS = {
+  1: { title: "Together We Can", prefix: "ch1-page", ext: "jpg", pages: 10 }
+  // change pages to the real number of pages
+};
+
+let readerObs;
+
+function openReader(num){
+  const b = READER_BOOKS[num];
+  if(!b){ alert("Textbook pages for this chapter are coming soon!"); return; }
+
+  document.getElementById("rTitle").innerText = "Ch " + num + " — " + b.title;
+
+  let pages = "", grid = "";
+  for(let i = 1; i <= b.pages; i++){
+    pages += `<div class="r-page" id="page-${i}">
+      <img loading="lazy" src="${b.prefix}${i}.${b.ext}" alt="Page ${i}"
+        onerror="this.alt='Page ${i} image not found'">
+      <div class="r-label">Page ${i} of ${b.pages}</div></div>`;
+    grid += `<button id="sb-${i}" onclick="goPage(${i})">${i}</button>`;
+  }
+  document.getElementById("rPages").innerHTML = pages;
+  document.getElementById("sGrid").innerHTML = grid;
+
+  const r = document.getElementById("reader");
+  r.style.display = "block";
+  r.scrollTop = 0;
+  document.body.style.overflow = "hidden";
+  toggleSorter(false);
+
+  if(readerObs) readerObs.disconnect();
+  readerObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if(e.isIntersecting){
+        const n = e.target.id.split("-")[1];
+        document.querySelectorAll(".s-grid button").forEach(x => x.classList.remove("on"));
+        document.getElementById("sb-" + n).classList.add("on");
+        document.getElementById("pageBtn").innerText = "📄 " + n + "/" + b.pages;
+      }
+    });
+  }, { root: r, rootMargin: "-40% 0px -50% 0px" });
+  document.querySelectorAll(".r-page").forEach(p => readerObs.observe(p));
+}
+
+function closeReader(){
+  document.getElementById("reader").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+function toggleSorter(show){
+  const s = document.getElementById("sorter");
+  s.style.display = (show === undefined ? s.style.display !== "block" : show) ? "block" : "none";
+}
+
+function goPage(n){
+  const el = document.getElementById("page-" + n);
+  if(el){ el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  toggleSorter(false);
+}
+
+function goInput(){
+  const n = parseInt(document.getElementById("goInput").value);
+  if(n) goPage(n);
+}
+
 </script>
 
 </body>
