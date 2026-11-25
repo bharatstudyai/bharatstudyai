@@ -171,6 +171,22 @@ border-radius:12px;
 </div>
 </div>
 
+<div id="reader">
+  <div class="r-bar">
+    <button onclick="closeReader()">← Back</button>
+    <div class="r-title" id="rTitle"></div>
+    <button id="pageBtn" onclick="toggleSorter()">📄 Pages</button>
+  </div>
+  <div id="sorter">
+    <div class="s-go">
+      <input id="goInput" type="number" min="1" placeholder="Page no.">
+      <button onclick="goInput()">Go</button>
+    </div>
+    <div class="s-grid" id="sGrid"></div>
+  </div>
+  <div class="r-pages" id="rPages"></div>
+</div>
+  
 <script>
   
 function showEnglish(){
